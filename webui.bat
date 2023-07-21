@@ -1,0 +1,2 @@
+python webui.py
+pause
