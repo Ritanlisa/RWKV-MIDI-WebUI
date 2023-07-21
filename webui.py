@@ -117,7 +117,7 @@ iface = gr.Interface(
                   "cuda:0 fp16 *10 -> cuda:1 fp16",
                   "cuda:0 fp16 *10 -> cuda:1 fp16 *8 -> cpu fp32",
                   ], label='strategy', show_label=True, value="cuda fp16"),
-        gr.Dropdown(choices=os.listdir('./models'), label='RWKV model', show_label=True, value=os.listdir('./models')[0]),
+        gr.Dropdown(choices=[x for x in os.listdir('./models') if (x.endswith('.pth') or x.endswith('.pt') or x.endswith('.ckpt'))], label='RWKV model', show_label=True, value=os.listdir('./models')[0]),
         gr.Slider(1, 100, label='batch num', show_label=True, step=1),
         gr.Radio(["txt only", "txt and midi"], label='output type', show_label=True, value="txt and midi"),
         gr.File(file_types=['.txt', '.midi', '.mid'], label='input file (optional)', show_label=True),
