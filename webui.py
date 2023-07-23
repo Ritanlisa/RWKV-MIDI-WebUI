@@ -63,7 +63,7 @@ def inference(device,strategy,model,batch_num,output_format,input_file,temperatu
 
     time = datetime.datetime.today()
     datemark = f"{time.year}_{time.month}_{time.day}"
-    timemark = f"{time.year}_{time.month}_{time.day}_{time.hour}_{time.minute}_{int(time.second)}"
+    timemark = f"{time.year}_{time.month}_{time.day}_{time.hour:02d}_{time.minute:02d}_{int(time.second):02d}"
     last_count = getLastAvailableName(output_format)
     if device == "CPU":
         os.environ["RWKV_CUDA_ON"] = "0"
@@ -86,11 +86,13 @@ def inference(device,strategy,model,batch_num,output_format,input_file,temperatu
         if input_file.name.endswith(".mid") or input_file.name.endswith(".midi"):
             mid = mido.MidiFile(input_file.name)
             text = midi_util.convert_midi_to_str(cfg, mid)
-            formatted_filename = input_file.name.replace(".midi","").replace(".mid","") + "_midi"
+            (path, formatted_filename) = os.path.split(input_file.name)
+            formatted_filename = "_".join(formatted_filename.replace(".midi", "").replace(".mid", "").replace("-", " ").replace("_", " ").split()) + "_midi"
         elif input_file.name.endswith(".txt"):
             with open(input_file.name, "r") as f:
                 text = f.read()
-            formatted_filename = input_file.name.replace(".txt","") + "_txt"
+            (path, formatted_filename) = os.path.split(input_file.name)
+            formatted_filename = "_".join(formatted_filename.replace(".txt", "").replace("-", " ").replace("_", " ").split()) + "_txt"
         text = text.strip()
         text.replace("<start>", "")
         text.replace("<end>", "")
