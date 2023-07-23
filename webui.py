@@ -86,11 +86,11 @@ def inference(device,strategy,model,batch_num,output_format,input_file,temperatu
         if input_file.name.endswith(".mid") or input_file.name.endswith(".midi"):
             mid = mido.MidiFile(input_file.name)
             text = midi_util.convert_midi_to_str(cfg, mid)
-            formatted_filename = input_file.name.replace(".midi").replace(".mid") + "_midi"
+            formatted_filename = input_file.name.replace(".midi","").replace(".mid","") + "_midi"
         elif input_file.name.endswith(".txt"):
             with open(input_file.name, "r") as f:
                 text = f.read()
-            formatted_filename = input_file.name.replace(".txt") + "_txt"
+            formatted_filename = input_file.name.replace(".txt","") + "_txt"
         text = text.strip()
         text.replace("<start>", "")
         text.replace("<end>", "")
